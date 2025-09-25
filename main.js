@@ -1,19 +1,41 @@
-import { getRecipes } from './api.js';
-import { renderGallery } from './ui.js';
+const BASE_URL = 'https://api.spoonacular.com'; 
+// NOTE: Replace with your actual, non-expired Spoonacular API key
+const API_KEY = '60ba206bf8e84e7ab5d041b0357e8a16'; 
 
-async function initRecipeApp() {
+
+export async function getRecipes(query = 'pasta') {
+    // 1. Construct the URL with necessary query parameters
+    const endpoint = `${BASE_URL}/recipes/complexSearch`;
+    const searchParams = new URLSearchParams({
+        query: query,
+        apiKey: API_KEY, // The API key must be sent as 'apiKey'
+        number: 10       // Request 10 results
+    });
+    
+    const url = `${endpoint}?${searchParams.toString()}`;
+    console.log(`Fetching from URL: ${url}`);
+
     try {
-        // Example of a user action (e.g., loading the initial gallery)
-        const recipes = await getRecipes('salad'); 
+        // 2. Perform the fetch request and await the response
+        const response = await fetch(url);
+
+        // 3. Check for HTTP errors (e.g., 404, 401, 500)
+        if (!response.ok) {
+            // Attempt to read the error message from the API
+            const errorData = await response.json(); 
+            throw new Error(`HTTP error! Status: ${response.status}. Message: ${errorData.message || 'Unknown API Error'}`);
+        }
+
+        // 4. Parse the JSON response
+        const data = await response.json();
         
-        // Example function to update the DOM (would be in ui.js)
-        renderGallery(recipes); 
-        
+        console.log("Recipes retrieved successfully:", data);
+        // The API wraps results in a 'results' array, so we return that directly
+        return data.results; 
+
     } catch (error) {
-        // Handle API or network errors in the UI
-        document.getElementById('gallery').innerHTML = 
-            `<p class="error">Failed to load recipes. Please try again later. (Details: ${error.message})</p>`;
+        // 5. Log the error and re-throw for main.js to handle the UI
+        console.error('Error fetching recipes:', error.message);
+        throw error; 
     }
 }
-
-initRecipeApp();
