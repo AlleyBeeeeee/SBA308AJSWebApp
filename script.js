@@ -1,44 +1,52 @@
-// script.js - Handles all DOM manipulation (UI)
-
 const gallery = document.getElementById('recipe-gallery');
 const searchButton = document.getElementById('search-button');
 
 export function showLoading() {
-    // Show a loading state visually
+   //load state
     gallery.innerHTML = '<div class="loading-state">Loading...</div>';
-    // Disable button to prevent multiple requests (Event Loop requirement)
+    // button disable
     searchButton.disabled = true; 
 }
 
 export function hideLoading() {
+    // enable btn
     searchButton.disabled = false;
 }
 
-
-//  fetched recipes into cards 
+//shows API recipes
 export function renderGallery(recipes) {
+    // Check if the recipes array is empty
     if (!recipes || recipes.length === 0) {
-        gallery.innerHTML = '<p class="info-message">No recipes found. Try a different search term or ingredient!</p>';
+        gallery.innerHTML = '<p class="info-message">No recipes found. Try a different search term!</p>';
         return;
     }
 
-    //  HTML for each recipe card
-    const html = recipes.map(recipe => `
-        <div class="recipe-card">
-            <img src="${recipe.image}" alt="${recipe.title}">
-            <div class="card-details">
-                <h3>${recipe.title}</h3>
-                <p>Spoonacular ID: ${recipe.id}</p>
-            </div>
-        </div>
-    `).join('');
+    let htmlContent = ''; 
+    for (let i = 0; i < recipes.length; i++) {
+        const recipe = recipes[i]; // current recipe object
 
-    gallery.innerHTML = html;
+        //ad it to the string
+        htmlContent += `
+            <div class="recipe-card">
+                <img src="${recipe.image}" alt="${recipe.title}">
+                <div class="card-details">
+                    <h3>${recipe.title}</h3>
+                    <p>Spoonacular ID: ${recipe.id}</p>
+                </div>
+            </div>
+        `;
+    }
+
+    // update
+    gallery.innerHTML = htmlContent;
 }
+
+//err message
 export function displayError(message) {
-    gallery.innerHTML = `<div class="error-box">
-                            <h2>Error!</h2>
-                            <p>Failed to load recipes. Check your API key and network connection.</p>
-                            <p class="error-detail">Details: ${message}</p>
-                         </div>`;
+    gallery.innerHTML = `
+        <div class="error-box">
+            <p>Failed to load recipes. Please check your API key and network connection.</p>
+            <p class="error-detail">Details: ${message}</p>
+        </div>
+    `;
 }

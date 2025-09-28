@@ -1,41 +1,42 @@
-const BASE_URL = 'https://api.spoonacular.com'; 
-// NOTE: Replace with your actual, non-expired Spoonacular API key
-const API_KEY = '60ba206bf8e84e7ab5d041b0357e8a16'; 
+import { getRecipes } from "../api.js";
+import {
+  showLoading,
+  hideLoading,
+  renderGallery,
+  displayError,
+} from "./script.js";
 
+const searchForm = document.getElementById("search-form");
+const searchInput = document.getElementById("search-input");
 
-export async function getRecipes(query = 'pasta') {
-    // 1. Construct the URL with necessary query parameters
-    const endpoint = `${BASE_URL}/recipes/complexSearch`;
-    const searchParams = new URLSearchParams({
-        query: query,
-        apiKey: API_KEY, // The API key must be sent as 'apiKey'
-        number: 10       // Request 10 results
-    });
-    
-    const url = `${endpoint}?${searchParams.toString()}`;
-    console.log(`Fetching from URL: ${url}`);
+//user input
+async function handleSearch(event) {
+  event.preventDefault();
 
-    try {
-        // 2. Perform the fetch request and await the response
-        const response = await fetch(url);
+  const query = searchInput.value.trim();
 
-        // 3. Check for HTTP errors (e.g., 404, 401, 500)
-        if (!response.ok) {
-            // Attempt to read the error message from the API
-            const errorData = await response.json(); 
-            throw new Error(`HTTP error! Status: ${response.status}. Message: ${errorData.message || 'Unknown API Error'}`);
-        }
+  let searchTerm = "pasta";
+  if (query !== "") {
+    searchTerm = query;
+  }
 
-        // 4. Parse the JSON response
-        const data = await response.json();
-        
-        console.log("Recipes retrieved successfully:", data);
-        // The API wraps results in a 'results' array, so we return that directly
-        return data.results; 
+showLoading  ();
 
-    } catch (error) {
-        // 5. Log the error and re-throw for main.js to handle the UI
-        console.error('Error fetching recipes:', error.message);
-        throw error; 
-    }
+  try {
+    const recipes = await getRecipes(searchTerm);
+
+    renderGallery(recipes);
+  } catch (error) {
+    displayError(error.message);
+  } finally {
+    hideLoading();
+  }
 }
+
+function start() {
+  searchForm.addEventListener("submit", handleSearch);
+
+  handleSearch({ preventDefault: () => {} });
+}
+
+start();
