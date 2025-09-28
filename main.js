@@ -1,4 +1,4 @@
-import { getRecipes } from "../api.js";
+import { getRecipes } from "./api.js";
 import {
   showLoading,
   hideLoading,
