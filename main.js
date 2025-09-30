@@ -6,37 +6,36 @@ import {
   displayError,
 } from "./script.js";
 
-const searchForm = document.getElementById("search-form");
-const searchInput = document.getElementById("search-input");
+const searchForm = document.getElementById('search-form');
+const searchInput = document.getElementById('search-input');
 
-//user input
 async function handleSearch(event) {
-  event.preventDefault();
+    // stop the browser's default behavior
+    // if (event) {
+    // // event.preventDefault(); 
+    // }
 
-  const query = searchInput.value.trim();
+    const query = searchInput.value; 
+    let searchTerm = (query !== '') ? query : 'pasta';
+  
+    showLoading()
 
-  let searchTerm = "pasta";
-  if (query !== "") {
-    searchTerm = query;
+    try {
+      const recipePage = await getRecipes(searchTerm)
+      renderGallery(recipePage)
+    } catch (e) {
+      displayError(e.message)
+    }
+    finally {
+      hideLoading()
+    }
+
+  }
+  
+  async function start() 
+  {
+    searchForm.addEventListener('submit', handleSearch);
+    handleSearch(null);
   }
 
-showLoading  ();
-
-  try {
-    const recipes = await getRecipes(searchTerm);
-
-    renderGallery(recipes);
-  } catch (error) {
-    displayError(error.message);
-  } finally {
-    hideLoading();
-  }
-}
-
-function start() {
-  searchForm.addEventListener("submit", handleSearch);
-
-  handleSearch({ preventDefault: () => {} });
-}
-
-start();
+  start()

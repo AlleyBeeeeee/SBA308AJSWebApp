@@ -1,7 +1,7 @@
 const BASE_URL = "https://api.spoonacular.com";
-const API_KEY = "60ba206bf8e84e7ab5d041b0357e8a16";
+const API_KEY = "bafe27948fe54efb81533ce50d2e6928";
 
-async function getRecipes(query = "pasta") {
+export async function getRecipes(query) {
   const url = `${BASE_URL}/recipes/complexSearch?query=${query}&apiKey=${API_KEY}&number=10`;
   console.log(`Fetching from URL: ${url}`);
 
@@ -16,12 +16,12 @@ async function getRecipes(query = "pasta") {
       );
     }
 getRecipes()
-    const data = await response.json();
+   const data = await response.json();
+        // console.log("Recipes retrieved successfully:", data);
+        return data.results; 
 
-    console.log("Recipes retrieved successfully:", data);
-    return data.results;
-  } catch (error) {
-    console.error("Error fetching recipes:", error.message);
-    throw error;
+    } catch (error) {
+       
+        throw error; 
   }
 }

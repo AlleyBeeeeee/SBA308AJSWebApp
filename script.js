@@ -33,7 +33,7 @@ export function renderGallery(recipes) {
                 <div class="card-details">
                     <h3>${recipe.title}</h3>
                     <p>Spoonacular ID: ${recipe.id}</p>
-                </div>
+                </div> 
             </div>
         `;
   }
@@ -46,7 +46,6 @@ export function renderGallery(recipes) {
 export function displayError(message) {
   gallery.innerHTML = `
         <div class="error-box">
-            <p>Failed to load recipes. Please check your API key and network connection.</p>
             <p class="error-detail">Details: ${message}</p>
         </div>
     `;
