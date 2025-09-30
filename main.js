@@ -1,3 +1,4 @@
+//modules
 import { getRecipes } from "./api.js";
 import {
   showLoading,
@@ -6,6 +7,7 @@ import {
   displayError,
 } from "./script.js";
 
+//create user interact
 const searchForm = document.getElementById('search-form');
 const searchInput = document.getElementById('search-input');
 
@@ -19,7 +21,7 @@ async function handleSearch(event) {
     let searchTerm = (query !== '') ? query : 'pasta';
   
     showLoading()
-
+//event loop
     try {
       const recipePage = await getRecipes(searchTerm)
       renderGallery(recipePage)
@@ -32,7 +34,7 @@ async function handleSearch(event) {
 
   }
   
-  async function start() 
+ function start() 
   {
     searchForm.addEventListener('submit', handleSearch);
     handleSearch(null);

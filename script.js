@@ -21,19 +21,19 @@ export function renderGallery(recipes) {
       '<p class="info-message">No recipes found. Try a different search term!</p>';
     return;
   }
-
+  // populate content
   let htmlContent = "";
   for (let i = 0; i < recipes.length; i++) {
     const recipe = recipes[i]; // current recipe object
 
+    const recipeLink = recipe.sourceUrl || `#`;
+
     //ad it to the string
-  htmlContent += `
+    htmlContent += `
         <a href="${recipeLink}" target="_blank" class="recipe-link">
             <div class="recipe-card">
                 <img src="${recipe.image}" alt="${recipe.title}">
                 <div class="card-details">
-                    <h3>${recipe.title}</h3>
-                    <p>Spoonacular ID: ${recipe.id}</p>
                 </div>
             </div>
         </a>
