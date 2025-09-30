@@ -27,15 +27,17 @@ export function renderGallery(recipes) {
     const recipe = recipes[i]; // current recipe object
 
     //ad it to the string
-    htmlContent += `
+  htmlContent += `
+        <a href="${recipeLink}" target="_blank" class="recipe-link">
             <div class="recipe-card">
                 <img src="${recipe.image}" alt="${recipe.title}">
                 <div class="card-details">
                     <h3>${recipe.title}</h3>
                     <p>Spoonacular ID: ${recipe.id}</p>
-                </div> 
+                </div>
             </div>
-        `;
+        </a>
+    `;
   }
 
   // update

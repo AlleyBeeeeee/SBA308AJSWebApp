@@ -1,9 +1,9 @@
 const BASE_URL = "https://api.spoonacular.com";
-const API_KEY = "bafe27948fe54efb81533ce50d2e6928";
+const API_KEY = "91754b66303a4a8a94a5e533873d3233";
 
 export async function getRecipes(query) {
-  const url = `${BASE_URL}/recipes/complexSearch?query=${query}&apiKey=${API_KEY}&number=10`;
-  console.log(`Fetching from URL: ${url}`);
+  const url = `${BASE_URL}/recipes/complexSearch?query=${query}&apiKey=${API_KEY}&number=10&addRecipeInformation=true`; 
+  console.log(`${url}`);
 
   try {
     const response = await fetch(url);
