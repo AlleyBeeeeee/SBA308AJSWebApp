@@ -4,7 +4,7 @@ const API_KEY = "91754b66303a4a8a94a5e533873d3233";
 export async function getRecipes(query) {
   const url = `${BASE_URL}/recipes/complexSearch?query=${query}&apiKey=${API_KEY}&number=10&addRecipeInformation=true`; 
   console.log(`${url}`);
-
+//fetch api use
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -15,7 +15,8 @@ export async function getRecipes(query) {
         }`
       );
     }
-getRecipes()
+
+
    const data = await response.json();
         // console.log("Recipes retrieved successfully:", data);
         return data.results; 
